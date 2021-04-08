@@ -1,0 +1,20 @@
+name: 'Update module version'
+description: 'Update plugin module version in target repo.'
+inputs:
+  target-repo:
+    description: 'Target repo in the format - github.com/owner/repo'
+    required: true
+  branch:
+    description: 'Branch of target repo to checkout and update.'
+    required: true
+  update-strategy:
+    description: "How to update the go module. This is used directly in the go get command. 
+      For example 'latest', 'master', 'v1.2.3' https://golang.org/cmd/go/#hdr-Module_queries."
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Update go.mod + vendor dir and create PR with changes.
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: ${{ github.action_path }}/update-mod.sh ${{ inputs.branch }} ${{ inputs.update-strategy }} ${{ inputs.target-repo }}
