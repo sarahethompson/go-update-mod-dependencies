@@ -28,9 +28,9 @@ if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   git commit -m "Updating $GITHUB_REPOSITORY deps"
   command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "$target_repo_short:$branch" \
   -h "$target_repo_short:update-$GITHUB_REPOSITORY-$VERSION-$(date +%s)" \
-  -l "plugin-update" -a "$ACTOR" -p | tail -1) || return 1
+  -l "plugin-update" -r "hashicorp/vault-ecosystem" -p | tail -1) || return 1
   echo "$command"
-  text="<$command|PR on Vault $branch> successfully created! ($GITHUB_REPOSITORY version: $VERSION) and assigned to $ACTOR"
+  text="<$command|PR on Vault $branch> successfully created! ($GITHUB_REPOSITORY version: $VERSION) and review requested from hashicorp/vault-ecosystem"
 else
   text="No PR created on Vault $branch ($GITHUB_REPOSITORY version: $VERSION) as this module version bump does not result in an update to go.mod. Please double check."
 fi
